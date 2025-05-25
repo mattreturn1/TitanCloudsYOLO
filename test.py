@@ -1,7 +1,6 @@
 from ultralytics import YOLO
 import os
 import numpy as np
-from pathlib import Path
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 import cv2
 
@@ -13,8 +12,8 @@ def compute_iou(mask1, mask2):
 def run_inference_and_metrics():
     model = YOLO("runs/cloud_yolo_seg3/weights/best.pt")
 
-    test_images_dir = "Dataset1/test/images"
-    label_dir = "Dataset1/test/labels"
+    test_images_dir = "Dataset/test/images"
+    label_dir = "Dataset/test/labels"
     output_dir = "predictions"
     os.makedirs(output_dir, exist_ok=True)
 
@@ -63,7 +62,8 @@ def run_inference_and_metrics():
                 pts[:, 0] *= width
                 pts[:, 1] *= height
                 pts = pts.astype(np.int32)
-                cv2.fillPoly(gt_mask, [pts], 1)
+                #cv2.fillPoly(gt_mask, [pts], 1)
+                cv2.fillPoly(gt_mask, [pts.reshape(-1, 1, 2)], 1)
 
         gt_mask_bool = gt_mask.astype(bool)
 
