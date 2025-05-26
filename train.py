@@ -51,6 +51,9 @@ def train_yolo():
         device=0,
     )
 
+    # Load best model from tuning
+    model = YOLO("runs/cloud_yolo_seg_tuned/weights/best.pt")
+
     model.train(
         data="data.yaml",
         imgsz=512,
