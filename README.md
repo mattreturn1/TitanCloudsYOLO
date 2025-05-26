@@ -17,7 +17,7 @@ This will generate `.txt` label files corresponding to each image in your datase
 Once the labels are converted, you can start training the model.
 
 ```bash
-yolo task=segment mode=train model=yolov8n-seg.pt data=data.yaml epochs=100 imgsz=640
+python train_yolo.py
 ```
 
 Make sure the `data.yaml` file is correctly set up to point to your training and validation datasets.
@@ -27,7 +27,7 @@ Make sure the `data.yaml` file is correctly set up to point to your training and
 After training is complete, evaluate the model on the test set:
 
 ```bash
-yolo task=segment mode=val model=runs/segment/train/weights/best.pt data=data.yaml
+python test.py
 ```
 
 Replace the model path with the actual path to your trained weights.

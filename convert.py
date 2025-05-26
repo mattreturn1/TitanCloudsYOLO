@@ -38,6 +38,7 @@ def convert_labelme_to_yolo_seg(json_dir, output_dir):
     print(f"Converted {len(json_files)} files to YOLO format at {output_dir}")
 
 # Perform the conversion for each split
+#TODO also images in new Dataset repository
 if __name__ == "__main__":
     convert_labelme_to_yolo_seg("Dataset_NASA/train/labels", "Dataset/train/labels")
     convert_labelme_to_yolo_seg("Dataset_NASA/test/labels", "Dataset/test/labels")

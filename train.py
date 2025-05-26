@@ -39,7 +39,7 @@ def train_yolo():
     model.tune(
         data="data.yaml",
         epochs=100,
-        iterations=10,
+        iterations=100,
         batch=8,
         optimizer="AdamW",
         space= search_space,
