@@ -1,6 +1,16 @@
 import os
 import json
+import shutil
 from pathlib import Path
+
+def copy_images(source_dir, target_dir):
+    os.makedirs(target_dir, exist_ok=True)
+
+    png_files = list(Path(source_dir).glob("*.png"))
+    for file in png_files:
+        target_file = Path(target_dir) / file.name
+        shutil.copy(file, target_file)
+        print(f"Copied: {file} → {target_file}")
 
 def convert_labelme_to_yolo_seg(json_dir, output_dir):
     os.makedirs(output_dir, exist_ok=True)
@@ -37,8 +47,9 @@ def convert_labelme_to_yolo_seg(json_dir, output_dir):
 
     print(f"Converted {len(json_files)} files to YOLO format at {output_dir}")
 
-# Perform the conversion for each split
-#TODO also images in new Dataset repository
+# Perform the conversion for each split and copy images
 if __name__ == "__main__":
     convert_labelme_to_yolo_seg("Dataset_NASA/train/labels", "Dataset/train/labels")
+    copy_images("Dataset_NASA/train/images", "Dataset/train/images")
     convert_labelme_to_yolo_seg("Dataset_NASA/test/labels", "Dataset/test/labels")
+    copy_images("Dataset_NASA/test/images", "Dataset/test/images")
