@@ -19,7 +19,7 @@
    ```bash
    pip install tacoreader rasterio tqdm pillow opencv-python
     ```
-2. Execute preprocess_earth.py
+2. Execute `preprocess_earth.py`
 3. Output:
 YOLO-segmentation formatted labels and RGB images saved into `datasets/CloudSen12/train` and `datasets/CloudSen12/val`.
 
@@ -31,11 +31,11 @@ YOLO-segmentation formatted labels and RGB images saved into `datasets/CloudSen1
 - Dataset is first merged, split into train/val/test.
 - Converts polygon annotations from .json to YOLO-seg format.
 - Removes corrupted images and entries without valid labels.
-- Optionally merges train and val into full_train for complete training set.
+- Merges train and val into full_train for complete training set.
 
 #### ▶️ How to Run
 
-1. Ensure dataset subrepositories `train` and `test` contain only images and labels repo:
+1. Ensure dataset subrepositories `train` and `test` contain only images and labels repo
 2. Execute `preprocess_titan.py`
 3. Output: YOLO-segmentation formatted labels and images saved into `datasets/Titan`
 
