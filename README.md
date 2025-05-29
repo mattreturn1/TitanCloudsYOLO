@@ -27,7 +27,7 @@ Make sure the `data.yaml` file is correctly set up to point to your training and
 After training is complete, evaluate the model on the test set:
 
 ```bash
-python test.py
+python test_old.py
 ```
 
 Replace the model path with the actual path to your trained weights.

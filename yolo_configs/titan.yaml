@@ -1,6 +1,6 @@
-path: Dataset
+path: ../datasets/Titan
 train: train/images
-val: test/images
+val: val/images
 test: test/images
 
 names:
