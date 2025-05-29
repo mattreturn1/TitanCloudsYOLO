@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import os
 
-#TODO for data augmentation insert parameter directly in train and tune functions
+#TODO for data augmentation insert parameter directly in train and tune functions as done in titan_model.tune
 
 #TODO actual epochs and iterations must be modified
 
@@ -76,7 +76,7 @@ final_model.train(
     name='titan_final_retrain'
 )
 # === STEP 7: Valutazione finale sul test set ===
-#TODO check if we have to use old test or val function
+#TODO for this part we must be consider if we have to use old test in replacement
 print("\n🧪 Valutazione finale sul test set...")
 final_model = YOLO(best_model_path)
 metrics = final_model.val(data='../yolo_configs/titan.yaml', split='test')

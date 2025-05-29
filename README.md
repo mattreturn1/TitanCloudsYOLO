@@ -1,33 +1,51 @@
 # Cloud Segmentation Project
 
-## Step 1: Convert JSON Labels to TXT Format
+## Step 1:Dataset Preparation
 
-Before training, you need to convert the polygon annotations from JSON (LabelMe format) to YOLO-compatible TXT format.
 
-Run the conversion script:
 
-```bash
-python convert_labels.py
-```
+### 🌍 CloudSen12 Dataset Preprocessing
 
-This will generate `.txt` label files corresponding to each image in your dataset.
+#### 📋 Description
 
-## Step 2: Train the YOLO Model
+- Filters only samples with cloud coverage > 65%.
+- Uses Sentinel-2 RGB bands.
+- Extracts polygons of cloud classes 1 and 2.
+- Converts masks into YOLO Segmentation format.
 
+#### ▶️ How to Run
+
+1. Install required libraries:
+   ```bash
+   pip install tacoreader rasterio tqdm pillow opencv-python
+    ```
+2. Execute preprocess_earth.py
+3. Output:
+YOLO-segmentation formatted labels and RGB images saved into `datasets/CloudSen12/train` and `datasets/CloudSen12/val`.
+
+### 🪐 Titan Dataset Preprocessing
+
+#### 📋 Description
+
+- Original dataset annotated using LabelMe.
+- Dataset is first merged, split into train/val/test.
+- Converts polygon annotations from .json to YOLO-seg format.
+- Removes corrupted images and entries without valid labels.
+- Optionally merges train and val into full_train for complete training set.
+
+#### ▶️ How to Run
+
+1. Ensure dataset subrepositories `train` and `test` contain only images and labels repo:
+2. Execute `preprocess_titan.py`
+3. Output: YOLO-segmentation formatted labels and images saved into `datasets/Titan`
+
+## Step 2: Train and tune the YOLO Model
 Once the labels are converted, you can start training the model.
 
+1. Install Ultralytics YOLO:
 ```bash
-python train_yolo.py
+pip install ultralytics
 ```
+2. Execute `preprocess_earth.py`
 
-Make sure the `data.yaml` file is correctly set up to point to your training and validation datasets.
-
-## Step 3: Test the YOLO Model
-
-After training is complete, evaluate the model on the test set:
-
-```bash
-python test_old.py
-```
-
-Replace the model path with the actual path to your trained weights.
+Make sure the `.yaml` files in `yolo_configs` repo are correctly set up to point to your training and validation datasets.

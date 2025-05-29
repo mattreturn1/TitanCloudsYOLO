@@ -6,7 +6,6 @@ from pathlib import Path
 from PIL import Image
 
 #TODO before start the code check if original repo dataset contains only subrepositories labels and images, the other must be deleted
-random.seed(42)  # Set seed for reproducibility
 
 # === Function to merge train and test folders into a single 'all' folder ===
 def merge_train_test_to_all(base_dir):
