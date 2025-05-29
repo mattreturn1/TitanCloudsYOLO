@@ -1,0 +1,7 @@
+path: ../datasets/Titan
+train: full_train/images
+val: full_train/images
+test: test/images
+
+names:
+  0: cloud
