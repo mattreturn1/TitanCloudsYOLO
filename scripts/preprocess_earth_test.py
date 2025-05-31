@@ -59,9 +59,6 @@ def process_sample(idx, split):
         s2_l1c = sample.read(0)
         s2_label = sample.read(1)
 
-        #s2_l1c = dataset.read(idx).read(0)
-        #s2_label = dataset.read(idx).read(1)
-
         with rio.open(s2_l1c) as src:
             if src.count < 4:
                 print(f"[{split}] Sample {idx} discarded: less than 4 bands.")
