@@ -10,7 +10,7 @@ import random
 #TODO decide how many samples for Earth
 
 # === PARAMETERS ===
-TOTAL_SAMPLES_CLOUDY = 20               # Number of cloudy images to select
+TOTAL_SAMPLES_CLOUDY = 2000               # Number of cloudy images to select
 CLEAR_PERCENTAGE = 0.2                  # Percentage of clear images relative to cloudy ones
 TOTAL_SAMPLES_CLEAR = int(TOTAL_SAMPLES_CLOUDY * CLEAR_PERCENTAGE)
 VAL_SPLIT = 0.2                         # Fraction of data to use as validation set
