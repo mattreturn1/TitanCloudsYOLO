@@ -18,10 +18,10 @@ titan_model = YOLO('../runs/train/earth_clouds_yolo11n/weights/best.pt')
 titan_model.tune(
     data='../yolo_configs/titan.yaml',
     space=search_space,  # Added space argument
-    epochs=20,
+    epochs=40,
     imgsz=416,
     batch = 16,
-    iterations=2,
+    iterations=40,
     optimizer='Adam',
     plots=True,
     project='../runs/tune',
