@@ -1,1 +1,9 @@
 #TODO add requirements
+numpy~=2.1.2
+opencv-python~=4.11.0.86
+ultralytics~=8.3.143
+scikit-learn~=1.6.1
+tacoreader~=0.5.6
+rasterio~=1.4.3
+pillow~=11.0.0
+tqdm~=4.67.1
