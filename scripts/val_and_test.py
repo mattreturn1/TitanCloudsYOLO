@@ -1,42 +1,6 @@
 from ultralytics import YOLO
 import os
 
-# === STEP 3: Fine-tuning su nuvole terrestri ===
-earth_model = YOLO('../yolo11n-seg.pt')
-earth_model.train(
-    data='../yolo_configs/earth.yaml',
-    epochs=100,
-    imgsz=416,
-    batch = 16,
-    freeze=10,
-    patience=10,
-    project='../runs/train',
-    name='earth_clouds_yolo11n',
-    pretrained=True
-)
-
-# === STEP 4: Tuning iperparametri su Titano with data augmentation===
-titan_model = YOLO('../runs/train/earth_clouds_yolo11n/weights/best.pt')
-titan_model.tune(
-    data='../yolo_configs/titan.yaml',
-    epochs=20,
-    imgsz=416,
-    batch = 16,
-    iterations=30,
-    optimizer='Adam',
-    plots=True,
-    project='../runs/tune',
-    name='titan_hparam_tune',
-    hsv_h=0.0,
-    hsv_s=0.0,
-    hsv_v=0.0,
-    translate=0.0,
-    scale=0.0,
-    fliplr=0.0,
-    mosaic=0.0,
-    erasing=0.0,
-)
-
 # === STEP 5: Validazione modelli ottenuti dal tuning ===
 tune_dir = '../runs/tune/titan_hparam_tune'
 weights_dir = os.path.join(tune_dir, 'weights')
