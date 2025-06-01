@@ -1,10 +1,6 @@
 from ultralytics import YOLO
 import os
 
-#TODO for data augmentation insert parameter directly in train and tune functions as done in titan_model.tune
-
-#TODO actual epochs and iterations must be modified
-
 # === STEP 3: Fine-tuning su nuvole terrestri ===
 earth_model = YOLO('../yolo11n-seg.pt')
 earth_model.train(
