@@ -8,7 +8,7 @@
 
 #### 📋 Description
 
-- Filters only samples with cloud coverage > 65%.
+- Filters only samples with cloud coverage > 55%.
 - Uses Sentinel-2 RGB bands.
 - Extracts polygons of cloud classes 1 and 2.
 - Converts masks into YOLO Segmentation format.
@@ -27,7 +27,7 @@ YOLO-segmentation formatted labels and RGB images saved into `datasets/CloudSen1
 
 #### 📋 Description
 
-- Original dataset annotated using LabelMe.
+- Original dataset annotated using LabelMe, moved in `datasets` repository.
 - Dataset is first merged, split into train/val/test.
 - Converts polygon annotations from .json to YOLO-seg format.
 - Removes corrupted images and entries without valid labels.
