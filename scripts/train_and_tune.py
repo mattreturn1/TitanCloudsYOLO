@@ -11,6 +11,7 @@ earth_model.train(
     data='../yolo_configs/earth.yaml',
     epochs=100,
     imgsz=416,
+    batch = 16,
     freeze=10,
     patience=10,
     project='../runs/train',
@@ -24,6 +25,7 @@ titan_model.tune(
     data='../yolo_configs/titan.yaml',
     epochs=20,
     imgsz=416,
+    batch = 16,
     iterations=30,
     optimizer='Adam',
     plots=True,
@@ -72,6 +74,7 @@ final_model.train(
     data='../yolo_configs/titan_full.yaml',  # full_train split
     epochs=100,
     imgsz=416,
+    batch = 16,
     project='../runs/train',
     name='titan_final_retrain'
 )
