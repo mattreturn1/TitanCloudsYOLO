@@ -5,14 +5,12 @@ from ultralytics import YOLO  # Import the YOLO class from the Ultralytics libra
 search_space = {
     "lr0": (1e-5, 1e-1),             # Initial learning rate
     "lrf": (1e-2, 1),                # Final learning rate multiplier
-    "momentum": (0.6, 0.98),         # Momentum for SGD optimizer
     "weight_decay": (0.0, 1e-3),     # Weight decay (L2 regularization)
-    "hsv_h": (0.0, 0.1),             # Hue augmentation
-    "hsv_s": (0.0, 0.9),             # Saturation augmentation
     "hsv_v": (0.0, 0.9),             # Value (brightness) augmentation
     "translate": (0.0, 0.9),         # Image translation augmentation
     "scale": (0.0, 0.9),             # Image scaling augmentation
-    "flipud": (0.0, 1.0)             # Vertical flip probability
+    "degrees":(0.0, 180),            # Image rotation augmentation
+    "perspective":(0.0,0.01)         # Image perspective augmentation
 }
 
 # === STEP 4: Hyperparameter tuning on Titan dataset with data augmentation ===
