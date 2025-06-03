@@ -22,10 +22,10 @@ titan_model = YOLO('../runs/train/earth_clouds_yolo11n/weights/best.pt')
 titan_model.tune(
     data='../yolo_configs/titan.yaml',  # Dataset configuration for Titan
     space=search_space,                 # Hyperparameter search space
-    epochs=40,                          # Number of epochs for each trial
+    epochs=50,                          # Number of epochs for each trial
     imgsz=416,                          # Input image size
     batch=16,                           # Batch size
-    iterations=40,                      # Number of tuning iterations (trials)
+    iterations=80,                      # Number of tuning iterations (trials)
     optimizer='Adam',                   # Optimizer to use during tuning
     plots=True,                         # Enable result plots for visualization
     project='../runs/tune',             # Folder to save tuning results

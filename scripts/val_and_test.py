@@ -36,7 +36,7 @@ print("\n🔁 Final retraining on train + val (full_train)...")
 final_model = YOLO(best_model_path)  # Load best model
 final_model.train(
     data='../yolo_configs/titan_full.yaml',  # Train + validation split configuration
-    epochs=100,
+    epochs=500,
     imgsz=416,
     batch=16,
     project='../runs/train',
