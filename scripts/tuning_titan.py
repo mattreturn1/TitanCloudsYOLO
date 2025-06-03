@@ -13,8 +13,6 @@ search_space = {
     "perspective":(0.0,0.01)         # Image perspective augmentation
 }
 
-# === STEP 4: Hyperparameter tuning on Titan dataset with data augmentation ===
-
 # Load the best model trained on Earth clouds as the base for tuning
 titan_model = YOLO('../runs/train/earth_clouds_yolo11n/weights/best.pt')
 

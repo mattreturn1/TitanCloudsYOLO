@@ -1,7 +1,5 @@
 from ultralytics import YOLO  # Import the YOLO class from the Ultralytics library
 
-# === STEP 3: Fine-tuning on Earth cloud images ===
-
 # Load a pre-trained YOLO model with segmentation support
 # '../yolo11n-seg.pt' is a custom or pre-trained model checkpoint
 earth_model = YOLO('../yolo11n-seg.pt')

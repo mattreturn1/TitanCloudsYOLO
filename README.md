@@ -46,6 +46,12 @@ Once the labels are converted, you can start training the model.
 ```bash
 pip install ultralytics
 ```
-2. Execute `preprocess_earth.py`
+2. Execute in the following order:
+- `training_earth.py`
+- `tuning_titan.py`
+- `validation.py`
+- `final_model.py`
 
 Make sure the `.yaml` files in `yolo_configs` repo are correctly set up to point to your training and validation datasets.
+
+If you want to retrain or retune the models substitute the names in proper functions with new names.
