@@ -58,10 +58,7 @@ only `labels` and `images`, others subdirectory must be deleted.
    ```
 
 3. **Output**:
-   Data and annotations in YOLO-Seg format saved in:
-   ```
-   datasets/Titan/
-   ```
+   Data and annotations in YOLO-Seg format saved in `datasets/Titan/`
 
 ---
 
