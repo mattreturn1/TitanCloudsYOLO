@@ -145,3 +145,4 @@ To retrain or experiment with new parameters:
 ## Notes
 - To obtain a consistent subdataset from CloudSen12 in preprocessing phase we applied some controls in order to obtain valid images
 which can make the download time-consuming (depending on your internet speed). We therefore recommend using the pre-uploaded version.
+- Make sure to run the scripts from the correct directory
