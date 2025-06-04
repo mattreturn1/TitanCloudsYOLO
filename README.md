@@ -131,8 +131,7 @@ To retrain or experiment with new parameters:
 │   ├── preprocess_earth.py
 │   ├── preprocess_titan.py
 │   ├── training_earth.py
-│   ├── tuning_titan.py
-│   └── titan_full.yaml
+│   └── tuning_titan.py
 ├── yolo_configs/
 │   ├── earth.yaml
 │   ├── titan.yaml
