@@ -11,7 +11,7 @@ earth_model.train(
     imgsz=416,                             # Input image size (416x416)
     batch=16,                              # Batch size
     freeze=10,                             # Freeze the first 10 layers (useful for transfer learning)
-    patience=15,                           # Stop training early if no improvement after 10 epochs
+    patience=15,                           # Stop training early if no improvement after 15 epochs
     project='../runs/train',               # Directory where training results will be saved
     name='earth_clouds_yolo11n',           # Name of the training run (used for output folders)
     pretrained=True                        # Use pre-trained weights as a starting point
