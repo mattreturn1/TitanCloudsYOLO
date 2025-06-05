@@ -7,7 +7,7 @@ earth_model = YOLO('../yolo11n-seg.pt')
 # Start training (fine-tuning) the model on a new dataset
 earth_model.train(
     data='../yolo_configs/earth.yaml',     # Path to dataset configuration file (with classes, paths, etc.)
-    epochs=150,                            # Train for 100 epochs
+    epochs=150,                            # Train for 150 epochs
     imgsz=416,                             # Input image size (416x416)
     batch=16,                              # Batch size
     freeze=10,                             # Freeze the first 10 layers (useful for transfer learning)
