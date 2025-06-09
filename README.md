@@ -1,7 +1,7 @@
 
 # Cloud Segmentation with Titan and CloudSen12
 
-This project focuses on the preparation and training of YOLO models for cloud segmentation, using the **CloudSen12** and **Titan** datasets.
+This project focuses on the preparation and training of YOLO nano for cloud segmentation, using the **CloudSen12** and **Titan** datasets.
 
 ---
 
@@ -66,7 +66,7 @@ only `labels` and `images`, others subdirectory must be deleted.
 
 ### Installation
 
-Install Ultralytics YOLOv8:
+Install Ultralytics YOLOv11:
 ```bash
 pip install ultralytics
 ```
