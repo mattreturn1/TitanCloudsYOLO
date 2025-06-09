@@ -4,8 +4,11 @@ import numpy as np
 import cv2
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 
+# Load the best YOLO model from hyperparameter tuning and retrain on full training data (train + val)
 print("\nFinal retraining on train + val (full_train)...")
 final_model = YOLO('../runs/tune/titan_hparam_tune/weights/best.pt')
+
+# Start retraining with specified configuration and save outputs to specified directory
 final_model.train(
     data='../yolo_configs/titan_full.yaml',
     epochs=500,
@@ -15,29 +18,34 @@ final_model.train(
     name='titan_final_retrain'
 )
 
+# Define function to compute Intersection over Union (IoU) between two binary masks
 def compute_iou(mask1, mask2):
     intersection = np.logical_and(mask1, mask2).sum()
     union = np.logical_or(mask1, mask2).sum()
     return intersection / union if union > 0 else 0.0
 
-
+# Load the retrained YOLO model for final evaluation on the test dataset
 print("\nFinal evaluation on the custom test set...")
 model = YOLO('../runs/train/titan_final_retrain/weights/best.pt')
 
+# Define paths to test images, ground truth labels, and output directory for predictions
 test_images_dir = "../datasets/Titan/test/images"
 label_dir = "../datasets/Titan/test/labels"
 output_dir = "../predictions"
 os.makedirs(output_dir, exist_ok=True)
 
+# Initialize evaluation metrics and counters
 ious, precs, recalls, accs = [], [], [], []
 global_tp, global_fp, global_fn = 0, 0, 0
 tot = 0
 processed = 0
 
+# Iterate through test images and evaluate predictions
 for file in os.listdir(test_images_dir):
     if not file.endswith(".png"):
         continue
 
+    # Read image and corresponding ground truth label file
     image_path = os.path.join(test_images_dir, file)
     label_path = os.path.join(label_dir, file.replace(".png", ".txt"))
     if not os.path.exists(label_path):
@@ -47,6 +55,7 @@ for file in os.listdir(test_images_dir):
     image = cv2.imread(image_path)
     height, width = image.shape[:2]
 
+    # Run YOLO model inference and generate predicted binary mask
     results = model.predict(source=image_path, save=False, conf=0.5)
     result = results[0]
 
@@ -58,6 +67,7 @@ for file in os.listdir(test_images_dir):
                 mask = cv2.resize(mask.astype(np.uint8), (width, height), interpolation=cv2.INTER_NEAREST).astype(bool)
             pred_mask = np.logical_or(pred_mask, mask)
 
+    # Parse YOLO polygon labels and generate binary ground truth mask
     gt_mask = np.zeros((height, width), dtype=np.uint8)
     with open(label_path, "r") as f:
         for line in f.readlines():
@@ -71,6 +81,7 @@ for file in os.listdir(test_images_dir):
             pts = pts.astype(np.int32)
             cv2.fillPoly(gt_mask, [pts.reshape(-1, 1, 2)], 1)
 
+    # Flatten masks and compute evaluation metrics (IoU, precision, recall, accuracy)
     gt_mask_bool = gt_mask.astype(bool)
     y_true = gt_mask_bool.flatten()
     y_pred = pred_mask.flatten()
@@ -80,6 +91,7 @@ for file in os.listdir(test_images_dir):
     recalls.append(recall_score(y_true, y_pred, zero_division=0))
     accs.append(accuracy_score(y_true, y_pred))
 
+    # Accumulate global true positives, false positives, and false negatives
     tp = np.logical_and(y_true, y_pred).sum()
     fp = np.logical_and(~y_true, y_pred).sum()
     fn = np.logical_and(y_true, ~y_pred).sum()
@@ -89,6 +101,7 @@ for file in os.listdir(test_images_dir):
     tot += len(y_true)
     processed += 1
 
+    # Save predicted mask and overlay visualization for qualitative analysis
     pred_mask_uint8 = (pred_mask.astype(np.uint8)) * 255
     cv2.imwrite(os.path.join(output_dir, file.replace(".png", "_pred_mask.png")), pred_mask_uint8)
 
@@ -96,6 +109,7 @@ for file in os.listdir(test_images_dir):
     color_mask[:, :, 1] = pred_mask_uint8
     overlay = cv2.addWeighted(image, 1.0, color_mask, 0.5, 0)
 
+    # Draw predicted bounding boxes on overlay image
     if result.boxes is not None:
         for box in result.boxes.xyxy.cpu().numpy():
             x1, y1, x2, y2 = map(int, box)
@@ -103,6 +117,7 @@ for file in os.listdir(test_images_dir):
 
     cv2.imwrite(os.path.join(output_dir, file.replace(".png", "_overlay.png")), overlay)
 
+# Print average and global evaluation metrics after processing all test samples
 print(f"\nProcessed {processed} images.")
 print("Metrics:")
 print(f"avg_iou: {np.mean(ious):.4f}")

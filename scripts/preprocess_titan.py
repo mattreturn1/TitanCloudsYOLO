@@ -5,7 +5,7 @@ import random
 from pathlib import Path
 from PIL import Image
 
-# === Function to merge train and test folders into a single 'all' folder ===
+# Function to merge train and test folders into a single 'all' folder
 def merge_train_test_to_all(base_dir):
     all_images = os.path.join(base_dir, "all", "images")
     all_labels = os.path.join(base_dir, "all", "labels")
@@ -22,7 +22,7 @@ def merge_train_test_to_all(base_dir):
         for f in os.listdir(lbl_dir):
             shutil.copy(os.path.join(lbl_dir, f), os.path.join(all_labels, f))  # Copy all labels
 
-# === Function to copy .png images from one folder to another ===
+# Function to copy .png images from one folder to another
 def copy_images(source_dir, target_dir):
     os.makedirs(target_dir, exist_ok=True)
 
@@ -32,7 +32,7 @@ def copy_images(source_dir, target_dir):
         shutil.copy(file, target_file)
         print(f"Copied: {file} → {target_file}")
 
-# === Function to convert LabelMe JSON labels to YOLO segmentation format ===
+# Function to convert LabelMe JSON labels to YOLO segmentation format
 def convert_labelme_to_yolo_seg(json_dir, output_dir):
     os.makedirs(output_dir, exist_ok=True)
     json_files = list(Path(json_dir).glob("*.json"))
@@ -70,7 +70,7 @@ def convert_labelme_to_yolo_seg(json_dir, output_dir):
 
     print(f"Converted {len(json_files)} files to YOLO format at {output_dir}")
 
-# === Function to remove corrupted images and those without labels ===
+# Function to remove corrupted images and those without labels
 def clean_dataset(images_dir, labels_dir):
     corrupted_files = []
     missing_labels = []
@@ -106,7 +106,7 @@ def clean_dataset(images_dir, labels_dir):
     if missing_labels:
         print(" -", "\n - ".join(missing_labels))
 
-# === Function to split dataset into train, val, and test ===
+# Function to split dataset into train, val, and test
 def split_dataset(images_dir, labels_dir, output_base):
     image_files = sorted([f for f in os.listdir(images_dir) if f.endswith(".png")])
     random.seed(42)
@@ -165,7 +165,7 @@ def merge_train_val_to_full_train(dataset_root):
 
     print(f"✅ Merged train and val into: {full_train_img_dir} and {full_train_lbl_dir}")
 
-# === MAIN EXECUTION BLOCK ===
+# MAIN EXECUTION BLOCK
 if __name__ == "__main__":
     merge_train_test_to_all("../datasets/Dataset_NASA")
 

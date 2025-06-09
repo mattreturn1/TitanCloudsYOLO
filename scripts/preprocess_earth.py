@@ -7,7 +7,7 @@ import cv2
 from tqdm import tqdm
 import random
 
-# Parameters (same as your original)
+# Define parameters for dataset generation, such as total samples, splits, and thresholds
 TOTAL_SAMPLES_CLOUDY = 2000
 CLEAR_PERCENTAGE = 0.2
 TOTAL_SAMPLES_CLEAR = int(TOTAL_SAMPLES_CLOUDY * CLEAR_PERCENTAGE)
@@ -16,41 +16,50 @@ CLOUD_THRESHOLD = 55
 SAVE_ROOT = "../datasets/CloudSen12"
 CLASS_ID = 0
 
+# Create directory structure for saving training and validation data
 os.makedirs(SAVE_ROOT, exist_ok=True)
 for split in ["train", "val"]:
     os.makedirs(f"{SAVE_ROOT}/{split}/images", exist_ok=True)
     os.makedirs(f"{SAVE_ROOT}/{split}/labels", exist_ok=True)
 
+# Load the CloudSEN12 dataset using the TacoReader interface
 dataset = tacoreader.load("tacofoundation:cloudsen12-l1c")
 
-# Counters
+# Initialize counters for tracking processed cloudy and clear samples
 count_cloudy = 0
 count_clear = 0
 
 val_cloudy_count = int(TOTAL_SAMPLES_CLOUDY * VAL_SPLIT)
 val_clear_count = int(TOTAL_SAMPLES_CLEAR * VAL_SPLIT)
 
+# Function to process and save a single sample (image and label)
 def process_sample(idx, s2_l1c, s2_label, split):
     try:
         with rio.open(s2_l1c) as src:
             if src.count < 4:
                 print(f"[{split}] Sample {idx} has less than 4 bands, skipping.")
                 return False
+
+            # Read and preprocess RGB bands from Sentinel-2 L1C image
             rgb = src.read([4,3,2])
         with rio.open(s2_label) as lbl:
             mask = lbl.read(1)
 
+        # Normalize and convert image to 8-bit PNG format
         img = np.transpose(rgb, (1,2,0))
         img = np.clip(img / 3000, 0, 1) * 255
         img = Image.fromarray(img.astype(np.uint8))
         img_name = f"img_{idx:05d}.png"
         img.save(f"{SAVE_ROOT}/{split}/images/{img_name}")
 
+        # Generate binary mask for cloud pixels and extract contours for segmentation
         cloud_mask = np.where(np.isin(mask, [1, 2]), 255, 0).astype(np.uint8)
         contours, _ = cv2.findContours(cloud_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         label_lines = []
         h, w = cloud_mask.shape
+
+        # Normalize contour coordinates and format as YOLO-style polygon segmentation
         for contour in contours:
             contour = contour.squeeze()
             if contour.ndim != 2 or contour.shape[0] < 3:
@@ -63,6 +72,8 @@ def process_sample(idx, s2_l1c, s2_label, split):
             label_lines.append(line)
 
         label_name = img_name.replace(".png", ".txt")
+
+        # Save label data in YOLO segmentation format
         with open(f"{SAVE_ROOT}/{split}/labels/{label_name}", "w") as f:
             f.write("\n".join(label_lines))
 
@@ -71,10 +82,12 @@ def process_sample(idx, s2_l1c, s2_label, split):
         print(f"[{split}] Error processing sample {idx}: {e}")
         return False
 
-
+# Select and process cloudy images based on cloud percentage threshold
 print("Processing cloudy images...")
 cloudy_df = dataset[dataset["thick_percentage"] > CLOUD_THRESHOLD]
 cloudy_indices = cloudy_df.index.tolist()
+
+# Randomly shuffle and iterate over cloudy image indices
 random.seed(42)
 random.shuffle(cloudy_indices)
 
@@ -100,9 +113,12 @@ for idx in tqdm(cloudy_indices):
 
 print(f"Collected and processed {count_cloudy} cloudy images.")
 
+# Process clear sky samples with no cloud pixels
 print("Processing clear images...")
 non_cloudy_df = dataset[dataset["thick_percentage"] < CLOUD_THRESHOLD]
 non_cloudy_indices = non_cloudy_df.index.tolist()
+
+# Randomly shuffle and iterate over clear image indices
 random.shuffle(non_cloudy_indices)
 
 for idx in tqdm(non_cloudy_indices):
